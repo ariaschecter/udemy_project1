@@ -31,22 +31,68 @@ class PortfolioController extends Controller
         ]);
 
         $image = $request->file('portfolio_image');
+        $name_gen = hexdec(uniqid()).'.'.$image->getClientOriginalExtension();
+        $save_url = 'upload/portfolio/'.$name_gen;
+        Image::make($image)->resize(1020, 519)->save($save_url);
+
+        Portfolio::insert([
+            'portfolio_name' => $request->portfolio_name,
+            'portfolio_title' => $request->portfolio_title,
+            'portfolio_description' => $request->portfolio_description,
+            'portfolio_image' => $save_url,
+            'created_at' => Carbon::now(),
+        ]);
+
+        $notification = array(
+            'message' => 'Portfolio Inserted Successfully',
+            'alert-type' => 'success'
+        );
+        return redirect()->route('all.portfolio')->with($notification);
+    } // End Method
+
+    public function EditPortfolio($id) {
+        $portfolio = Portfolio::findOrFail($id);
+        return view('admin.portfolio.portfolio_edit', compact('portfolio'));
+    } // End Method
+
+    public function UpdatePortfolio(Request $request) {
+        $portfolio = Portfolio::findOrFail($request->id);
+
+        if ($request->file('portfolio_image')) {
+            $image = $request->file('portfolio_image');
             $name_gen = hexdec(uniqid()).'.'.$image->getClientOriginalExtension();
             $save_url = 'upload/portfolio/'.$name_gen;
             Image::make($image)->resize(1020, 519)->save($save_url);
 
-            Portfolio::insert([
+            // Remove from storage
+            unlink($portfolio->portfolio_image);
+
+            Portfolio::findOrFail($portfolio->id)->update([
                 'portfolio_name' => $request->portfolio_name,
                 'portfolio_title' => $request->portfolio_title,
                 'portfolio_description' => $request->portfolio_description,
                 'portfolio_image' => $save_url,
-                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ]);
 
             $notification = array(
-                'message' => 'Portfolio Inserted Successfully',
+                'message' => 'Portfolio Updated with Image Successfully',
                 'alert-type' => 'success'
             );
             return redirect()->route('all.portfolio')->with($notification);
-    }
+        } else {
+            Portfolio::findOrFail($portfolio->id)->update([
+                'portfolio_name' => $request->portfolio_name,
+                'portfolio_title' => $request->portfolio_title,
+                'portfolio_description' => $request->portfolio_description,
+                'updated_at' => Carbon::now(),
+            ]);
+
+            $notification = array(
+                'message' => 'Portfolio Updated without Image Successfully',
+                'alert-type' => 'success'
+            );
+            return redirect()->route('all.portfolio')->with($notification);
+        } // End else
+    } // End Method
 }
