@@ -18,7 +18,10 @@
                     <div class="row mb-3">
                         <label for="portfolio_name" class="col-sm-2 col-form-label">Portfolio Name</label>
                         <div class="col-sm-10">
-                            <input name="portfolio_name" class="form-control" type="text" value="" id="portfolio_name">
+                            <input name="portfolio_name" class="form-control" type="text" value="{{ old('portfolio_name') }}" id="portfolio_name">
+                            @error('portfolio_name')
+                                <span class="text-danger"> {{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
                     <!-- end row -->
@@ -26,7 +29,10 @@
                     <div class="row mb-3">
                         <label for="portfolio_title" class="col-sm-2 col-form-label">Portfolio Title</label>
                         <div class="col-sm-10">
-                            <input name="portfolio_title" class="form-control" type="text" value="" id="portfolio_title">
+                            <input name="portfolio_title" class="form-control" type="text" value="{{ old('portfolio_title') }}" id="portfolio_title">
+                            @error('portfolio_title')
+                                <span class="text-danger"> {{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
                     <!-- end row -->
@@ -34,7 +40,10 @@
                     <div class="row mb-3">
                         <label for="portfolio_description" class="col-sm-2 col-form-label">Portfolio Description</label>
                         <div class="col-sm-10">
-                            <textarea name="portfolio_description" id="elm1" cols="30" rows="10"></textarea>
+                            <textarea name="portfolio_description" id="elm1" cols="30" rows="10">{{ old('portfolio_description') }}</textarea>
+                            @error('portfolio_description')
+                                <span class="text-danger"> {{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
                     <!-- end row -->
@@ -42,7 +51,10 @@
                   <div class="row mb-3">
                       <label for="portfolio_image" class="col-sm-2 col-form-label">Portfolio Image </label>
                       <div class="col-sm-10">
-                  <input name="portfolio_image" class="form-control" type="file"  id="image">
+                        <input name="portfolio_image" class="form-control" type="file"  id="image">
+                        @error('portfolio_image')
+                                <span class="text-danger"> {{ $message }}</span>
+                            @enderror
                       </div>
                   </div>
                   <!-- end row -->
