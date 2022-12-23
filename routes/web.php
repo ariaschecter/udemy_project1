@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Home\HomeSliderController;
 use App\Http\Controllers\Home\AboutController;
+use App\Http\Controllers\Home\PortfolioController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,13 +23,13 @@ Route::get('/', function () {
 });
 
 // Admin All Route
-Route::controller(AdminController::class)->group(function () {
+Route::middleware('auth')->controller(AdminController::class)->group(function () {
     Route::get('/admin/logout', 'destroy')->name('admin.logout');
-    Route::get('/admin/profile', 'Profile')->name('admin.profile')->middleware('auth');
-    Route::get('/edit/profile', 'EditProfile')->name('edit.profile')->middleware('auth');
-    Route::post('/store/profile', 'StoreProfile')->name('store.profile')->middleware('auth');
-    Route::get('/change/password', 'ChangePassword')->name('change.password')->middleware('auth');
-    Route::post('/change/password', 'UpdatePassword')->name('change.password')->middleware('auth');
+    Route::get('/admin/profile', 'Profile')->name('admin.profile');
+    Route::get('/edit/profile', 'EditProfile')->name('edit.profile');
+    Route::post('/store/profile', 'StoreProfile')->name('store.profile');
+    Route::get('/change/password', 'ChangePassword')->name('change.password');
+    Route::post('/change/password', 'UpdatePassword')->name('change.password');
 });
 
 // Home Slide All Route
@@ -50,7 +51,10 @@ Route::controller(AboutController::class)->group(function () {
     Route::get('/delete/multi/image/{id}', 'DeleteMultiImage')->name('delete.multi.image');
 });
 
+Route::controller(PortfolioController::class)->group(function () {
+    Route::get('/all/portfolio', 'AllPortfolio')->name('all.portfolio');
 
+});
 
 
 Route::get('/dashboard', function () {
