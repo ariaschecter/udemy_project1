@@ -42,7 +42,7 @@
                                         <td><img src="{{ asset($portfolio->portfolio_image) }}" alt="Portfolio Image" style="width: 50px; height: 50px"></td>
                                         <td>
                                             <a href="{{ route('edit.portfolio', $portfolio->id) }}" class="btn btn-info sm" title="Edit Data"><i class="fas fa-edit"></i></a>
-                                            <a href="{{ route('delete.portfolio', $portfolio->id) }}" class="btn btn-danger sm" title="Delete Data" id="delete"><i class="fas fa-trash-alt"></i></a>
+                                            <a href="{{ route('delete.multi.image', $portfolio->id) }}" class="btn btn-danger sm" title="Delete Data" id="delete"><i class="fas fa-trash-alt"></i></a>
                                         </td>
                                     </tr>
                                 @endforeach
