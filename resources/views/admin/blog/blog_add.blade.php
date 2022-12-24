@@ -20,14 +20,18 @@
 
                 <h4 class="card-title">Add Blog Page </h4>
 
-                <form method="post" action="{{ route('store.portfolio') }}" enctype="multipart/form-data">
+                <form method="post" action="{{ route('store.blog') }}" enctype="multipart/form-data">
                     @csrf
 
                     <div class="row mb-3">
                         <label for="blog_category_id" class="col-sm-2 col-form-label">Blog Category</label>
                         <div class="col-sm-10">
                             <select class="form-select" aria-label="Default Select Example" name="blog_category_id" id="blog_category_id">
-                                <option value=""></option>
+                                <option selecter>Open this select menu</option>
+                                @foreach ($blogCategories as $category)
+                                    <option value="{{ $category->id }}">{{ $category->blog_category }}</option>
+                                @endforeach
+
                             </select>
                             @error('blog_category_id')
                                 <span class="text-danger"> {{ $message }}</span>
