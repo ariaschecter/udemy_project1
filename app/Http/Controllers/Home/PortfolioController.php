@@ -10,16 +10,19 @@ use Image;
 
 class PortfolioController extends Controller
 {
-    public function AllPortfolio() {
+    public function AllPortfolio()
+    {
         $portfolios = Portfolio::latest()->get();
         return view('admin.portfolio.portfolio_all', compact('portfolios'));
     } // End Method
 
-    public function AddPortfolio() {
+    public function AddPortfolio()
+    {
         return view('admin.portfolio.portfolio_add');
     }
 
-    public function StorePortfolio(Request $request) {
+    public function StorePortfolio(Request $request)
+    {
         $request->validate([
             'portfolio_name' => 'required',
             'portfolio_title' => 'required',
@@ -31,8 +34,8 @@ class PortfolioController extends Controller
         ]);
 
         $image = $request->file('portfolio_image');
-        $name_gen = hexdec(uniqid()).'.'.$image->getClientOriginalExtension();
-        $save_url = 'upload/portfolio/'.$name_gen;
+        $name_gen = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
+        $save_url = 'upload/portfolio/' . $name_gen;
         Image::make($image)->resize(1020, 519)->save($save_url);
 
         Portfolio::insert([
@@ -50,18 +53,20 @@ class PortfolioController extends Controller
         return redirect()->route('all.portfolio')->with($notification);
     } // End Method
 
-    public function EditPortfolio($id) {
+    public function EditPortfolio($id)
+    {
         $portfolio = Portfolio::findOrFail($id);
         return view('admin.portfolio.portfolio_edit', compact('portfolio'));
     } // End Method
 
-    public function UpdatePortfolio(Request $request) {
+    public function UpdatePortfolio(Request $request)
+    {
         $portfolio = Portfolio::findOrFail($request->id);
 
         if ($request->file('portfolio_image')) {
             $image = $request->file('portfolio_image');
-            $name_gen = hexdec(uniqid()).'.'.$image->getClientOriginalExtension();
-            $save_url = 'upload/portfolio/'.$name_gen;
+            $name_gen = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
+            $save_url = 'upload/portfolio/' . $name_gen;
             Image::make($image)->resize(1020, 519)->save($save_url);
 
             // Remove from storage
@@ -96,7 +101,25 @@ class PortfolioController extends Controller
         } // End else
     } // End Method
 
-    public function PortfolioDetails($id) {
+    public function DeletePortfolio($id)
+    {
+
+        $portfolio = Portfolio::findOrFail($id);
+        $img = $portfolio->portfolio_image;
+        unlink($img);
+
+        Portfolio::findOrFail($id)->delete();
+
+        $notification = array(
+            'message' => 'Portfolio Image Deleted Successfully',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->back()->with($notification);
+    } // End Method
+
+    public function PortfolioDetails($id)
+    {
         $portfolio = Portfolio::findOrFail($id);
         return view('frontend.portfolio_details', compact('portfolio'));
     }
