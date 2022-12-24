@@ -37,8 +37,8 @@
                                         <td>{{ $i++ }}</td>
                                         <td>{{ $blogCategory->blog_category }}</td>
                                         <td>
-                                            <a href="{{ url('/', $blogCategory->id) }}" class="btn btn-info sm" title="Edit Data"><i class="fas fa-edit"></i></a>
-                                            <a href="{{ route('delete.multi.image', $blogCategory->id) }}" class="btn btn-danger sm" title="Delete Data" id="delete"><i class="fas fa-trash-alt"></i></a>
+                                            <a href="{{ route('edit.blog.category', $blogCategory->id) }}" class="btn btn-info sm" title="Edit Data"><i class="fas fa-edit"></i></a>
+                                            <a href="{{ route('delete.blog.category', $blogCategory->id) }}" class="btn btn-danger sm" title="Delete Data" id="delete"><i class="fas fa-trash-alt"></i></a>
                                         </td>
                                     </tr>
                                 @endforeach
