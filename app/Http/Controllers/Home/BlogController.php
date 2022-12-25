@@ -53,4 +53,9 @@ class BlogController extends Controller
         );
         return redirect()->route('all.blog')->with($notification);
     } // End Method
+
+    public function EditBlog(Blog $blog) {
+        $blogCategories = BlogCategory::orderBy('blog_category', 'ASC')->get();
+        return view('admin.blog.blog_edit', compact('blog', 'blogCategories'));
+    }
 }

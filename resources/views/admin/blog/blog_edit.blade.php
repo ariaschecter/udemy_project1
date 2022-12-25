@@ -18,18 +18,18 @@
           <div class="card">
               <div class="card-body">
 
-                <h4 class="card-title">Add Blog Page </h4>
+                <h4 class="card-title">Edit Blog Page </h4>
 
-                <form method="post" action="{{ route('store.blog') }}" enctype="multipart/form-data">
+                <form method="post" action="{{ route('store.blog', $blog->id) }}" enctype="multipart/form-data">
                     @csrf
 
                     <div class="row mb-3">
                         <label for="blog_category_id" class="col-sm-2 col-form-label">Blog Category</label>
                         <div class="col-sm-10">
                             <select class="form-select" aria-label="Default Select Example" name="blog_category_id" id="blog_category_id">
-                                <option selected>Open this select menu</option>
+                                <option>Open this select menu</option>
                                 @foreach ($blogCategories as $category)
-                                    <option value="{{ $category->id }}">{{ $category->blog_category }}</option>
+                                    <option value="{{ $category->id }}" {{ $category->id == $blog->blog_category_id ? 'selected' : '' }}>{{ $category->blog_category }}</option>
                                 @endforeach
 
                             </select>
@@ -43,7 +43,7 @@
                     <div class="row mb-3">
                         <label for="blog_title" class="col-sm-2 col-form-label">Blog Title</label>
                         <div class="col-sm-10">
-                            <input name="blog_title" class="form-control" type="text" value="{{ old('blog_title') }}" id="blog_title">
+                            <input name="blog_title" class="form-control" type="text" value="{{ $blog->blog_title }}" id="blog_title">
                             @error('blog_title')
                                 <span class="text-danger"> {{ $message }}</span>
                             @enderror
@@ -54,7 +54,7 @@
                     <div class="row mb-3">
                         <label for="blog_tags" class="col-sm-2 col-form-label">Blog Tags</label>
                         <div class="col-sm-10">
-                            <input name="blog_tags" value="home,tech" class="form-control" type="text" id="blog_tags" data-role="tagsinput">
+                            <input name="blog_tags" class="form-control" type="text" value="{{ $blog->blog_tags }}" id="blog_tags" data-role="tagsinput">
                             @error('blog_tags')
                                 <span class="text-danger"> {{ $message }}</span>
                             @enderror
@@ -65,7 +65,7 @@
                     <div class="row mb-3">
                         <label for="blog_description" class="col-sm-2 col-form-label">Blog Description</label>
                         <div class="col-sm-10">
-                            <textarea name="blog_description" id="elm1" cols="30" rows="10">{{ old('blog_description') }}</textarea>
+                            <textarea name="blog_description" id="elm1" cols="30" rows="10">{{ $blog->blog_description }}</textarea>
                             @error('blog_description')
                                 <span class="text-danger"> {{ $message }}</span>
                             @enderror
@@ -87,11 +87,11 @@
                     <div class="row mb-3">
                        <label for="example-text-input" class="col-sm-2 col-form-label">  </label>
                       <div class="col-sm-10">
-                          <img id="showImage" class="rounded avatar-lg" src="{{ url('upload/no-image.jpg') }}" alt="Card image cap">
+                          <img id="showImage" class="rounded avatar-lg" src="{{ asset($blog->blog_image) }}" alt="Card image cap">
                       </div>
                   </div>
                   <!-- end row -->
-                    <input type="submit" class="btn btn-info waves-effect waves-light" value="Insert Blog Data">
+                    <input type="submit" class="btn btn-info waves-effect waves-light" value="Update Blog Data">
                   </form>
 
               </div>
