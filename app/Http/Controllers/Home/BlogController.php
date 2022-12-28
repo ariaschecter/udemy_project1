@@ -109,4 +109,10 @@ class BlogController extends Controller
         );
         return redirect()->back()->with($notification);
     } // End Method
+
+    public function BlogDetails(Blog $blog) {
+        $allblogs = Blog::latest()->limit(5)->get();
+        $categories = BlogCategory::orderBy('blog_category','ASC')->get();
+        return view('frontend.blog_details',compact('blog','allblogs','categories'));
+    } // End Method
 }
