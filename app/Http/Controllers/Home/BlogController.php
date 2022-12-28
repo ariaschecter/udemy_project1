@@ -57,5 +57,56 @@ class BlogController extends Controller
     public function EditBlog(Blog $blog) {
         $blogCategories = BlogCategory::orderBy('blog_category', 'ASC')->get();
         return view('admin.blog.blog_edit', compact('blog', 'blogCategories'));
-    }
+    } // End Method
+
+    public function UpdateBlog(Request $request, Blog $blog) {
+        if ($request->file('blog_image')) {
+            $image = $request->file('blog_image');
+            $name_gen = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
+            $save_url = 'upload/blog/' . $name_gen;
+            Image::make($image)->resize(430, 327)->save($save_url);
+
+            // Remove from storage
+            unlink($blog->blog_image);
+
+            Blog::findOrFail($blog->id)->update([
+                'blog_category_id' => $request->blog_category_id,
+                'blog_title' => $request->blog_title,
+                'blog_tags' => $request->blog_tags,
+                'blog_description' => $request->blog_description,
+                'blog_image' => $save_url,
+                'updated_at' => Carbon::now(),
+            ]);
+
+            $notification = array(
+                'message' => 'Blog Updated with Image Successfully',
+                'alert-type' => 'success'
+            );
+            return redirect()->route('all.blog')->with($notification);
+        } else {
+            Blog::findOrFail($blog->id)->update([
+                'blog_category_id' => $request->blog_category_id,
+                'blog_title' => $request->blog_title,
+                'blog_tags' => $request->blog_tags,
+                'blog_description' => $request->blog_description,
+                'updated_at' => Carbon::now(),
+            ]);
+
+            $notification = array(
+                'message' => 'Blog Updated without Image Successfully',
+                'alert-type' => 'success'
+            );
+            return redirect()->route('all.blog')->with($notification);
+        } // End else
+    } // End Method
+
+    public function DeleteBlog(Blog $blog) {
+        unlink($blog->blog_image);
+        $blog->delete();
+        $notification = array(
+            'message' => 'Blog Deleted Successfully',
+            'alert-type' => 'success'
+        );
+        return redirect()->back()->with($notification);
+    } // End Method
 }

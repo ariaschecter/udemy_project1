@@ -20,7 +20,7 @@
 
                 <h4 class="card-title">Edit Blog Page </h4>
 
-                <form method="post" action="{{ route('store.blog', $blog->id) }}" enctype="multipart/form-data">
+                <form method="post" action="{{ route('update.blog', $blog->id) }}" enctype="multipart/form-data">
                     @csrf
 
                     <div class="row mb-3">
